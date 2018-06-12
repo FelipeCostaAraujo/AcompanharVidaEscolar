@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">AvE</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
     <string name="facebook_app_id" translatable="false">1832024487102633</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb1832024487102633</string>
 
@@ -15,4 +17,10 @@
     <string name="str_btnCadastrar">CADASTRAR</string>
     <string name="str_item_configuracoes">Configurações</string>
     <string name="str_item_sair">Sair</string>
+    <string name="str_item_filhos">Filhos (as)</string>
+    <string name="str_item_professor">Professor</string>
+    <string name="str_item_turmas">Turmas</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
