@@ -7,8 +7,15 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
 import com.jeffersonantunes.ave.R;
+import com.jeffersonantunes.ave.config.ConfigFirebase;
+import com.jeffersonantunes.ave.model.Aluno;
+import com.jeffersonantunes.ave.model.Turma;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -23,6 +30,20 @@ public class TurmaFragment extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
+
+    private EditText txtTurma;
+    private EditText txtTurno;
+    private EditText txtSala;
+    private EditText txtSeg;
+    private EditText txtTer;
+    private EditText txtQua;
+    private EditText txtQui;
+    private EditText txtSex;
+    private EditText txtMatriculaAluno;
+    private EditText txtTurmaAluno;
+    private EditText txtNomeAluno;
+    private Button btnCadastrarTurma;
+    private Button btnCadastrarAluno;
 
     // TODO: Rename and change types of parameters
     private String mParam1;
@@ -59,13 +80,125 @@ public class TurmaFragment extends Fragment {
             mParam1 = getArguments().getString(ARG_PARAM1);
             mParam2 = getArguments().getString(ARG_PARAM2);
         }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
+        View view =  inflater.inflate(R.layout.fragment_turma, container, false);
+
+        txtTurma                                = (EditText) view.findViewById(R.id.txtTurma);
+        txtTurno                                = (EditText) view.findViewById(R.id.txtTurno);
+        txtSala                                 = (EditText) view.findViewById(R.id.txtSala);
+        txtSeg                                  = (EditText) view.findViewById(R.id.txtSeg);
+        txtTer                                  = (EditText) view.findViewById(R.id.txtTer);
+        txtQua                                  = (EditText) view.findViewById(R.id.txtQua);
+        txtQui                                  = (EditText) view.findViewById(R.id.txtQui);
+        txtSex                                  = (EditText) view.findViewById(R.id.txtSex);
+        txtMatriculaAluno                       = (EditText) view.findViewById(R.id.txtMatriculaAluno);
+        txtTurmaAluno                           = (EditText) view.findViewById(R.id.txtTurmaAluno);
+        txtNomeAluno                            = (EditText) view.findViewById(R.id.txtNomeAluno);
+
+        btnCadastrarTurma                       = (Button) view.findViewById(R.id.btnCadastrarTurma);
+        btnCadastrarTurma.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validaEditText("turma")){
+                    Turma turma = new Turma();
+
+                    turma.setTurma(txtTurma.getText().toString());
+                    turma.setTurno(txtTurno.getText().toString());
+                    turma.setSala(Integer.parseInt(txtSala.getText().toString()));
+                    turma.setSeg(Integer.parseInt(txtSeg.getText().toString()));
+                    turma.setTer(Integer.parseInt(txtTer.getText().toString()));
+                    turma.setQua(Integer.parseInt(txtQua.getText().toString()));
+                    turma.setQui(Integer.parseInt(txtQui.getText().toString()));
+                    turma.setSex(Integer.parseInt(txtSex.getText().toString()));
+
+                    turma.salvar();
+
+                    Toast.makeText(getActivity(), "Nova turma adicionada.", Toast.LENGTH_LONG).show();
+
+                    txtTurma.setText("");
+                    txtTurno.setText("");
+                    txtSala.setText("");
+                    txtSeg.setText("");
+                    txtTer.setText("");
+                    txtQua.setText("");
+                    txtQui.setText("");
+                    txtSex.setText("");
+
+
+                }
+            }
+        });
+
+
+        btnCadastrarAluno                       = (Button) view.findViewById(R.id.btnCadastrarAluno);
+        btnCadastrarAluno.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validaEditText("aluno")){
+
+                    Aluno aluno = new Aluno();
+
+                    aluno.setTurma(txtTurmaAluno.getText().toString());
+                    aluno.setNome(txtNomeAluno.getText().toString());
+                    aluno.setMatricula(Integer.parseInt(txtMatriculaAluno.getText().toString()));
+
+                    aluno.salvar();
+
+                    Toast.makeText(getActivity(), "Novo usuario adicionado.", Toast.LENGTH_LONG).show();
+
+                    txtTurmaAluno.setText("");
+                    txtMatriculaAluno.setText("");
+                    txtNomeAluno.setText("");
+
+                }
+            }
+        });
+
+
+
+
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_turma, container, false);
+        return view;
+
+    }
+
+    private boolean validaEditText(String bloco){
+
+        switch (bloco) {
+            case "turma":
+                if (txtTurma.getText().length() <= 0
+                        || txtTurno.getText().length() <= 0
+                        || txtSala.getText().length() <= 0
+                        || txtSeg.getText().length() <= 0
+                        || txtTer.getText().length() <= 0
+                        || txtQua.getText().length() <= 0
+                        || txtQui.getText().length() <= 0
+                        || txtSex.getText().length() <= 0) {
+
+                    Toast.makeText(getActivity(), "Por favor preencha todos os campos para continuar.", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    return true;
+                }
+            case "aluno":
+                if (txtMatriculaAluno.getText().length() <= 0
+                        || txtTurmaAluno.getText().length() <= 0
+                        || txtNomeAluno.getText().length() <= 0) {
+
+                    Toast.makeText(getActivity(), "Por favor preencha todos os campos para continuar.", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    return true;
+                }
+            default:
+                return false;
+        }
     }
 
     // TODO: Rename method, update argument and hook method into UI event

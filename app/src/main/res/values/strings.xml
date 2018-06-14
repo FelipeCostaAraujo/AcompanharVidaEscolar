@@ -20,7 +20,27 @@
     <string name="str_item_filhos">Filhos (as)</string>
     <string name="str_item_professor">Professor</string>
     <string name="str_item_turmas">Turmas</string>
+    <string name="str_txtvwCadastrarTurma">Cadastrar Turmas:</string>
+    <string name="str_btnCadastrarTurma">Nova Turma</string>
+    <string name="str_txtvwCadastrarAluno">Cadastrar Aluno:</string>
+    <string name="str_btnCadastrarAluno">Novo Aluno</string>
+    <string name="str_txtvwSemana">Professores dia semana:</string>
+    <string name="str_txtTurma">Turma</string>
+    <string name="str_txtTurno">Turno</string>
+    <string name="str_txtSala">Sala</string>
+    <string name="str_txtDom">dom</string>
+    <string name="str_txtSeg">seg</string>
+    <string name="str_txtTer">ter</string>
+    <string name="str_txtQua">qua</string>
+    <string name="str_txtQui">qui</string>
+    <string name="str_txtSex">sex</string>
+    <string name="str_txtSab">sab</string>
+
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="str_txtMatriculaAluno">Matricula</string>
+    <string name="str_txtTurmaAluno">Turma</string>
+
+
 </resources>
