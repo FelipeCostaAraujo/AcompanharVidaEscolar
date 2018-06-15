@@ -192,7 +192,7 @@ public class LoginActivity extends AppCompatActivity {
                 if (dataSnapshot.exists()) {
                     Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
                     Preferencias preferencias = new Preferencias(LoginActivity.this);
-                    preferencias.salvarDados(idUsuarioLogado, usuarioRecuperado.getNome());
+                    preferencias.salvarDados(idUsuarioLogado, usuarioRecuperado.getNome(), usuarioRecuperado.getAcesso());
                 }else{
                     usuario.setUid(mUser.getUid());
                     usuario.setNome(mUser.getDisplayName());
@@ -200,7 +200,7 @@ public class LoginActivity extends AppCompatActivity {
                     usuario.setAcesso("usuario");
                     usuario.salvar();
                     Preferencias preferencias = new Preferencias(LoginActivity.this);
-                    preferencias.salvarDados(usuario.getId(), usuario.getNome());
+                    preferencias.salvarDados(usuario.getId(), usuario.getNome(), usuario.getAcesso());
                 }
 
 
@@ -286,7 +286,7 @@ public class LoginActivity extends AppCompatActivity {
 
                             Usuario usuarioRecuperado = dataSnapshot.getValue(Usuario.class);
                             Preferencias preferencias = new Preferencias(LoginActivity.this);
-                            preferencias.salvarDados(idUsuarioLogado,usuarioRecuperado.getNome());
+                            preferencias.salvarDados(idUsuarioLogado,usuarioRecuperado.getNome(),usuarioRecuperado.getAcesso());
                         }
 
                         @Override

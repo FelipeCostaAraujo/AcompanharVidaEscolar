@@ -1,14 +1,23 @@
 package com.jeffersonantunes.ave.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 import com.jeffersonantunes.ave.R;
+import com.jeffersonantunes.ave.activity.CadastroUsuarioActivity;
+import com.jeffersonantunes.ave.activity.ChamadaActivity;
+import com.jeffersonantunes.ave.activity.LoginActivity;
+import com.jeffersonantunes.ave.activity.MainActivity;
+import com.jeffersonantunes.ave.model.Professor;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +36,14 @@ public class ProfessorFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private EditText txtMatriculaProfessor;
+    private EditText txtNomeProfessor;
+    private EditText txtDisciplina;
+    private EditText txtTurmaChamada;
+    private EditText txtData;
+    private Button btnCadastrarProfessor;
+    private Button btnChamada;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,9 +82,83 @@ public class ProfessorFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_professor, container, false);
-    }
+        View view = inflater.inflate(R.layout.fragment_professor, container, false);
 
+        txtMatriculaProfessor                      = (EditText) view.findViewById(R.id.txtMatriculaProfessor);
+        txtNomeProfessor                           = (EditText) view.findViewById(R.id.txtNomeProfessor);
+        txtDisciplina                              = (EditText) view.findViewById(R.id.txtDisciplina);
+        txtTurmaChamada                            = (EditText) view.findViewById(R.id.txtTurmaChamada);
+        txtData                                    = (EditText) view.findViewById(R.id.txtDataChamada);
+
+        btnCadastrarProfessor                      = (Button) view.findViewById(R.id.btnCadastrarProfessor);
+        btnCadastrarProfessor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validaEditText("professor")){
+
+                    Professor professor = new Professor();
+
+                    professor.setDisciplina(txtDisciplina.getText().toString());
+                    professor.setNome(txtNomeProfessor.getText().toString());
+                    professor.setMatricula(Integer.parseInt(txtMatriculaProfessor.getText().toString()));
+
+                    professor.salvar();
+
+                    Toast.makeText(getActivity(), "Novo professor adicionado.", Toast.LENGTH_LONG).show();
+
+                    txtDisciplina.setText("");
+                    txtNomeProfessor.setText("");
+                    txtMatriculaProfessor.setText("");
+
+                }
+            }
+        });
+
+
+        btnChamada                     = (Button) view.findViewById(R.id.btnFazerChamada);
+        btnChamada.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (validaEditText("chamada")){
+                    abrirLoginUsuario();
+                }
+            }
+        });
+
+        return view;
+    }
+    private void abrirLoginUsuario(){
+        Intent intent = new Intent(getActivity(), ChamadaActivity.class);
+        intent.putExtra("data",txtData.toString());
+        intent.putExtra("turma",txtTurmaChamada.toString());
+        startActivity(intent);
+    }
+    private boolean validaEditText(String bloco){
+
+        switch (bloco) {
+            case "professor":
+                if (txtMatriculaProfessor.getText().length() <= 0
+                        || txtNomeProfessor.getText().length() <= 0
+                        || txtDisciplina.getText().length() <= 0) {
+
+                    Toast.makeText(getActivity(), "Por favor preencha todos os campos para continuar.", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    return true;
+                }
+            case "chamada":
+                if (txtTurmaChamada.getText().length() <= 0
+                        || txtData.getText().length() <= 0) {
+
+                    Toast.makeText(getActivity(), "Por favor preencha todos os campos para continuar.", Toast.LENGTH_LONG).show();
+                    return false;
+                } else {
+                    return true;
+                }
+            default:
+                return false;
+        }
+    }
     // TODO: Rename method, update argument and hook method into UI event
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {

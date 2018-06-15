@@ -93,7 +93,7 @@ public class CadastroUsuarioActivity extends AppCompatActivity {
                     usuario.salvar();
 
                     Preferencias preferencias = new Preferencias(CadastroUsuarioActivity.this);
-                    preferencias.salvarDados(idUsuarioCodificado, usuario.getNome());
+                    preferencias.salvarDados(idUsuarioCodificado, usuario.getNome(), usuario.getAcesso());
 
                     abrirLoginUsuario();
 

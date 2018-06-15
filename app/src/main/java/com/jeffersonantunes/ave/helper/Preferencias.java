@@ -11,6 +11,7 @@ public class Preferencias {
     private static final String NOME_ARQUIVO = "ave.preferencias";
     private static final String CHAVE_IDENTIFICADOR = "idUsuarioLogado";
     private static final String CHAVE_NOMEUSUARIO = "nomeUsuarioLogado";
+    private static final String CHAVE_ACESSOUSUARIO = "acessoUsuarioLogado";
     private static final int MODE = 0;
 
 
@@ -23,11 +24,12 @@ public class Preferencias {
     }
 
     //Metodo para salvar os dados do user
-    public void salvarDados(String idUsuarioLogado, String nomeUsuarioLogado){
+    public void salvarDados(String idUsuarioLogado, String nomeUsuarioLogado, String acessoUsuarioLogado){
 
         //inseri no arquivo o dado (id,valor)
         editor.putString(CHAVE_IDENTIFICADOR,idUsuarioLogado);
         editor.putString(CHAVE_NOMEUSUARIO,nomeUsuarioLogado);
+        editor.putString(CHAVE_ACESSOUSUARIO,acessoUsuarioLogado);
 
         //GRAVAR
         editor.commit();
@@ -42,5 +44,11 @@ public class Preferencias {
 
         return sharedPreferences.getString(CHAVE_NOMEUSUARIO,null);
     }
+
+    public String getAcessoUsuario() {
+
+        return sharedPreferences.getString(CHAVE_ACESSOUSUARIO,null);
+    }
+
 
 }

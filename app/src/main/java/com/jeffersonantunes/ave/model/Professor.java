@@ -1,5 +1,10 @@
 package com.jeffersonantunes.ave.model;
 
+import android.util.Log;
+
+import com.google.firebase.database.DatabaseReference;
+import com.jeffersonantunes.ave.config.ConfigFirebase;
+
 public class Professor {
 
     private int matricula;
@@ -9,12 +14,23 @@ public class Professor {
     public Professor() {
     }
 
-    public int getMatriculaProfessor() {
+    public void salvar(){
+        try {
+            DatabaseReference databaseReference = ConfigFirebase.getDbAveReference();
+            databaseReference.child("professor").child(String.valueOf(getMatricula())).setValue(Professor.this);
+        }catch (Exception e){
+            e.printStackTrace();
+            Log.e("ERROR:Professor:","salvar:" + e.getMessage());
+        }
+
+    }
+
+    public int getMatricula() {
         return matricula;
     }
 
-    public void setMatriculaProfessor(int matriculaProfessor) {
-        this.matricula = matriculaProfessor;
+    public void setMatricula(int matricula) {
+        this.matricula = matricula;
     }
 
     public String getNome() {

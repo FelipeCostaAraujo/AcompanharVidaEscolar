@@ -1,14 +1,26 @@
 package com.jeffersonantunes.ave.fragment;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.ValueEventListener;
 import com.jeffersonantunes.ave.R;
+import com.jeffersonantunes.ave.config.ConfigFirebase;
+import com.jeffersonantunes.ave.helper.Preferencias;
+import com.jeffersonantunes.ave.model.Aluno;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -27,6 +39,11 @@ public class FilhoFragment extends Fragment {
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
+
+    private FloatingActionButton fb;
+
+    private DatabaseReference dbAveReference;
+    private Preferencias preferencias;
 
     private OnFragmentInteractionListener mListener;
 
@@ -65,7 +82,98 @@ public class FilhoFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_filho, container, false);
+        View view =  inflater.inflate(R.layout.fragment_filho, container, false);
+
+        preferencias = new Preferencias(getActivity());
+
+        fb = (FloatingActionButton) view.findViewById(R.id.fbAddFilho);
+        fb.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                abrirCadastroContato();
+            }
+        });
+
+        return view;
+
+    }
+
+    private void abrirCadastroContato(){
+
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
+
+        //COnfiguração da alert
+        alertDialog.setTitle("Novo Filho");
+        alertDialog.setMessage("Matricula");
+        alertDialog.setCancelable(false);
+
+        final EditText editText = new EditText(getActivity());
+        alertDialog.setView(editText);
+
+        //Configuração dos botões
+        alertDialog.setPositiveButton("Adicionar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+                String matriculaFilho = editText.getText().toString();
+
+                //Valida se user digitou e-mail
+                if (matriculaFilho.isEmpty()){
+                    Toast.makeText(getContext(), "Por favor insira a matricula do seu filho (a)", Toast.LENGTH_SHORT).show();
+                }else {
+
+                    final String idUsuarioLogado = preferencias.getIdentificador();
+
+                    //Recuperar Instancia Fire Base
+                    dbAveReference = ConfigFirebase.getDbAveReference().child("aluno").child(matriculaFilho);
+
+                    dbAveReference.addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            if (dataSnapshot.getValue() != null){
+
+                                //Recuperar Dados do user Contato
+                                Aluno alunoRecuperado = dataSnapshot.getValue(Aluno.class);
+
+                                dbAveReference = ConfigFirebase.getDbAveReference().child("responsavel")
+                                        .child(idUsuarioLogado)
+                                        .child(String.valueOf(alunoRecuperado.getMatricula()))
+                                        .child("nome_filho");
+
+                                dbAveReference.setValue(alunoRecuperado.getNome());
+
+                                Toast.makeText(getActivity(),"Filho adicionado",Toast.LENGTH_LONG).show();
+
+
+                            }else {
+                                Toast.makeText(getActivity(),"Não foi possivél adicionar essa matricula aos seus filhos, aluno não é cadastrado",Toast.LENGTH_LONG).show();
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+
+
+
+
+                }
+
+            }
+        });
+
+        alertDialog.setNegativeButton("Cancelar", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+
+            }
+        });
+
+        alertDialog.create();
+        alertDialog.show();
+
     }
 
     // TODO: Rename method, update argument and hook method into UI event

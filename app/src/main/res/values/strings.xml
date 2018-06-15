@@ -41,6 +41,12 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="str_txtMatriculaAluno">Matricula</string>
     <string name="str_txtTurmaAluno">Turma</string>
+    <string name="str_txtvwCadastrarProfessor">Cadastrar Professor</string>
+    <string name="str_txtDisciplina">Disciplina</string>
+    <string name="str_btnCadastrarProfessor">Novo Professor</string>
+    <string name="str_btnFazerChamada">Fazer Chamada Online</string>
+    <string name="str_txtData">31/12/2018</string>
+    <string name="str_txtInserirDadosTurma">Inserir dados da turma e dia da chamada</string>
 
 
 </resources>
